@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
 import argparse
+import os
 import pickle
+import shutil
 import sys
 
 import torch
@@ -49,11 +51,20 @@ if __name__ == "__main__":
     num_workers = args.num_workers
     dataset_predict = args.dataset_predict
 
-    if torch.cuda.is_available():
+    # if torch.cuda.is_available():
+    #     device = torch.device('cuda')
+    # else:
+    #     device = torch.device('cpu')
+    if torch.xpu.is_available():
+        device = torch.device('xpu')
+        print('Using Intel NPU (XPU).')
+    elif torch.cuda.is_available():
         device = torch.device('cuda')
+        print('Using CUDA GPU.')
     else:
         device = torch.device('cpu')
-
+        print('Using CPU.')
+    print('-'*50)
     dir_trained = '../dataset/' + dataset_trained + '/'
     dir_predict = '../dataset/' + dataset_predict + '/'
 
@@ -88,3 +99,10 @@ if __name__ == "__main__":
     print('MAE:', MAE)
 
     print('The prediction has finished.')
+
+    # Copy to Downloads folder
+    download_dir = os.path.expanduser('~/Downloads')
+    if not os.path.exists(download_dir):
+        os.makedirs(download_dir)
+    shutil.copy(filename, os.path.join(download_dir, os.path.basename(filename)))
+    print(f'Prediction file also saved to {download_dir}')

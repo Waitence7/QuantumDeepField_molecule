@@ -3,6 +3,7 @@
 import argparse
 from collections import defaultdict
 import glob
+import os
 import pickle
 import shutil
 import sys
@@ -35,8 +36,9 @@ if __name__ == "__main__":
     grid_interval = args.grid_interval
     dataset_predict = args.dataset_predict
 
-    dir_trained = '../dataset/' + dataset_trained + '/'
-    dir_predict = '../dataset/' + dataset_predict + '/'
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    dir_trained = os.path.join(project_root, 'dataset', dataset_trained) + os.sep
+    dir_predict = os.path.join(project_root, 'dataset', dataset_predict) + os.sep
 
     filename = dir_trained + 'orbitaldict_' + basis_set + '.pickle'
     orbital_dict = load_dict(filename)

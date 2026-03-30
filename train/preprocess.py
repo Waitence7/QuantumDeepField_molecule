@@ -45,7 +45,7 @@ def create_orbitals(orbitals, orbital_dict):
     into the indices (e.g., H1s=0, C1s=1, N2s=2, and O2p=3) using orbital_dict.
     """
     orbitals = [orbital_dict[o] for o in orbitals]
-    return np.array(orbitals)
+    return np.array(orbitals)   
 
 
 def create_distancematrix(coords1, coords2):
@@ -190,8 +190,9 @@ if __name__ == "__main__":
     radius = args.radius
     grid_interval = args.grid_interval
 
-    """Dataset directory."""
-    dir_dataset = '../dataset/' + dataset + '/'
+    """Dataset directory (absolute path relative to project root)."""
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    dir_dataset = os.path.join(project_root, 'dataset', dataset) + os.sep
 
     """Initialize orbital_dict, in which
     each key is an orbital type and each value is its index.
